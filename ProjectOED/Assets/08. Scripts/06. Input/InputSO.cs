@@ -1,20 +1,37 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [CreateAssetMenu(fileName = "InputSO", menuName = "Scriptable Objects/InputSO")]
 public class InputSO : ScriptableObject
 {
-    public string ButtonName;
+    public static Dictionary<string, bool> checkKeys = new Dictionary<string, bool>();
 
-    [SerializeField] private KeyCode _keyCode;
+    public string ButtonName;
+    public string KeyCode;
+
+    [System.NonSerialized] public InputAction Action;
     [System.NonSerialized] public float Value;
     [System.NonSerialized] public Vector2 ValueV2;
 
     private bool _inputHold;
 
-    public event Action OnPressed;
-    public event Action OnReleased;
+    public event Action<InputAction> RebindKey;
+    public event Action<InputSO> OnPressed;
+    public event Action<InputSO> OnReleased;
+
+    public void Init(InputAction action)
+    {
+        Action = action;
+        ButtonName = action.name;
+        InitKeyCode();
+    }
+
+    public void InitKeyCode()
+    {
+        KeyCode = Action.GetBindingDisplayString(0);
+    }
 
     public bool Hold()
     {
@@ -39,7 +56,7 @@ public class InputSO : ScriptableObject
         }
 
         _inputHold = true;
-        OnPressed?.Invoke();
+        OnPressed?.Invoke(this);
     }
 
 
@@ -61,6 +78,6 @@ public class InputSO : ScriptableObject
         }
 
         _inputHold = false;
-        OnReleased?.Invoke();
+        OnReleased?.Invoke(this);
     }
 }

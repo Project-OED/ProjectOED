@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c4e7f670e43dca746859b02be3bbbd18, type: 3}
-  m_Name: Button
+  m_Name: Select
   m_EditorClassIdentifier: 
-  ButtonName: Button
-  _keyCode: 8
+  ButtonName: 
+  KeyCode: 
